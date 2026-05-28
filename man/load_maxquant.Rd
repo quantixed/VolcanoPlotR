@@ -29,3 +29,8 @@ reverse hits, and potential contaminants are removed, and missing gene and
 protein names are filled in based on the "Fasta.headers" column. Note: in the
 case of multiple identified proteins, the first one in the list is kept.
 }
+\examples{
+\dontrun{
+load_maxquant()
+}
+}

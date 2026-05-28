@@ -9,7 +9,13 @@ volcano_plot_maxquant(
   meas = "LFQ.intensity",
   threshold_p = 0.05,
   threshold_fc = 1,
+  p_line = TRUE,
+  zero_line = TRUE,
+  x_line = FALSE,
   vp_colours = NULL,
+  groups = NULL,
+  x_label = NULL,
+  y_label = NULL,
   fsize = 8
 )
 }
@@ -25,12 +31,32 @@ will be used to generate the plot}
 \item{threshold_fc}{numeric indicating the fold change threshold (in log2
 space, i.e. 1 is a 2-fold change, 2 is a 4-fold change, etc.)}
 
+\item{p_line}{boolean indicating whether to add a horizontal line at the
+p-value threshold}
+
+\item{zero_line}{boolean indicating whether to add a vertical line at x=0}
+
+\item{x_line}{boolean indicating whether to add vertical lines at the fold
+change thresholds}
+
 \item{vp_colours}{a named vector of colours for the volcano plot. The names
 of the vector should be the integers 0 through 5, which correspond to the
 different combinations of p-value and fold change thresholds. If NULL,
 default colours will be used.}
 
-\item{fsize}{numeric indicating the font size}
+\item{groups}{a vector of two strings containing the names of the
+experimental (these are used for the x-axis label). The purpose is to allow
+the user to substitute a better label than that used in the MaxQuant data.
+If NULL the values from the data are deduced and used.}
+
+\item{x_label}{string specifying the label for the x-axis. If NULL, a default
+label will be generated based on the group names.}
+
+\item{y_label}{string specifying the label for the y-axis. If NULL, a default
+label will be generated.}
+
+\item{fsize}{numeric indicating the font size to use for the plot (default is
+8)}
 }
 \value{
 ggplot object containing the volcano plot
@@ -41,4 +67,14 @@ data frame should contain the following columns: Protein.IDs, Gene.names,
 Protein.names, meas.ratio, p.value, and neg.log10.p.value. The function will
 add a colour code column to the data frame based on the p-value and fold
 change thresholds, and then use ggplot2 to create the volcano plot.
+}
+\examples{
+\dontrun{
+# load the MaxQuant data
+df <- load_maxquant()
+# process the MaxQuant data to get the subset for the volcano plot
+df_subset <- process_maxquant(df, group1 = "Treatment", group2  = "Control")
+# generate the volcano plot
+volcano_plot_maxquant(df_subset)
+}
 }

@@ -32,6 +32,16 @@
 #'   imputation of missing values from a Gaussian distribution (default is 1.8).
 #'   This is typically 1.8 for MaxQuant LFQ intensity data, but may be different
 #'   for other types of data.
+#' @param seed numeric value specifying the random seed to use for imputation of
+#'   missing values from a Gaussian distribution (default is 123). Setting a
+#'   seed ensures that the imputation is reproducible.
+#' @param var.equal boolean indicating whether to assume equal variances for the
+#'   t-test (default is TRUE). This is typically TRUE for MaxQuant LFQ intensity
+#'   data, but may be different for other types of data.
+#' @param paired boolean indicating whether to perform a paired t-test (default
+#'   is FALSE ). Note, paired assumes the columns for group1 and group2 are in
+#'   the same order and correspond to each other. No check is made to match the
+#'   columns by name.
 #'
 #' @returns A data frame containing the processed MaxQuant data suitable for
 #'   volcano plot visualization, including columns for log2 fold change and
@@ -39,10 +49,21 @@
 #' @importFrom stats rnorm t.test sd
 #'
 #' @export
+#'
+#' @examples
+#' \dontrun{
+#' # load the MaxQuant data
+#' df <- load_maxquant()
+#' # process the MaxQuant data to get the subset for the volcano plot
+#' df_subset <- process_maxquant(df, group1 = "Treatment", group2  = "Control")
+#' }
 process_maxquant <- function(df = NULL,
                              group1 = NULL, group2 = NULL,
                              meas = "LFQ.intensity", baseval = 0,
-                             width = 0.3, downshift = 1.8) {
+                             width = 0.3, downshift = 1.8,
+                             seed = 123,
+                             var.equal = TRUE,
+                             paired = FALSE) {
   # check that meas ends in . and if not, add it
   if (!grepl("\\.$", meas)) {
     meas <- paste0(meas, ".")
@@ -108,6 +129,7 @@ process_maxquant <- function(df = NULL,
   # turn, mask off the 0 values using conversion to NA then take the sd and mean
   # of the non-NA values in the column and then use this to impute values from a
   # gaussian back to the NA values
+  set.seed(seed)
   df_subset[, grep(meas, colnames(df_subset))] <- lapply(df_subset[, grep(meas, colnames(df_subset))], function(x) {
     x <- as.numeric(x)
     x[x == baseval] <- NA
@@ -134,7 +156,8 @@ process_maxquant <- function(df = NULL,
   for (i in 1:nrow(df_subset)) {
     x <- df_subset[i, grep(paste0(meas, group1), colnames(df_subset))]
     y <- df_subset[i, grep(paste0(meas, group2), colnames(df_subset))]
-    df_subset$p.value[i] <- t.test(x, y, var.equal = TRUE)$p.value
+    df_subset$p.value[i] <- t.test(x, y,
+                                   var.equal = var.equal, paired = paired)$p.value
   }
   # do a -log10 transformation of the p-values and add it as a new column
   df_subset$neg.log10.p.value <- -log10(df_subset$p.value)

@@ -11,7 +11,10 @@ process_maxquant(
   meas = "LFQ.intensity",
   baseval = 0,
   width = 0.3,
-  downshift = 1.8
+  downshift = 1.8,
+  seed = 123,
+  var.equal = TRUE,
+  paired = FALSE
 )
 }
 \arguments{
@@ -42,6 +45,19 @@ other types of data.}
 imputation of missing values from a Gaussian distribution (default is 1.8).
 This is typically 1.8 for MaxQuant LFQ intensity data, but may be different
 for other types of data.}
+
+\item{seed}{numeric value specifying the random seed to use for imputation of
+missing values from a Gaussian distribution (default is 123). Setting a
+seed ensures that the imputation is reproducible.}
+
+\item{var.equal}{boolean indicating whether to assume equal variances for the
+t-test (default is TRUE). This is typically TRUE for MaxQuant LFQ intensity
+data, but may be different for other types of data.}
+
+\item{paired}{boolean indicating whether to perform a paired t-test (default
+is FALSE ). Note, paired assumes the columns for group1 and group2 are in
+the same order and correspond to each other. No check is made to match the
+columns by name.}
 }
 \value{
 A data frame containing the processed MaxQuant data suitable for
@@ -59,4 +75,12 @@ with specified downshift and width parameters. Note, group1 is compared to
 group2, so the log2 fold change is calculated as group1 - group2, meaning
 that a positive value indicates enrichment in group1 and a negative value
 indicates enrichment in group2.
+}
+\examples{
+\dontrun{
+# load the MaxQuant data
+df <- load_maxquant()
+# process the MaxQuant data to get the subset for the volcano plot
+df_subset <- process_maxquant(df, group1 = "Treatment", group2  = "Control")
+}
 }

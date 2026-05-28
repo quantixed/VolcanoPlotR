@@ -3,6 +3,7 @@
 export(load_maxquant)
 export(process_maxquant)
 export(volcano_plot_maxquant)
+export(workflow_maxquant)
 import(ggplot2)
 importFrom(stats,rnorm)
 importFrom(stats,sd)
