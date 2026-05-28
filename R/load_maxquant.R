@@ -17,9 +17,8 @@
 #'   on the "Fasta.headers" column.
 #'
 #' @returns A data frame containing the MaxQuant data.
+#' @importFrom utils read.delim
 #' @export
-#'
-#' @examples
 load_maxquant <- function(file = "proteinGroups.txt", datadir = "Data", clean = TRUE) {
   # construct the full file path
   filepath <- file.path(datadir, file)

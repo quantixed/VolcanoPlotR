@@ -36,9 +36,9 @@
 #' @returns A data frame containing the processed MaxQuant data suitable for
 #'   volcano plot visualization, including columns for log2 fold change and
 #'   p-values.
-#' @export
+#' @importFrom stats rnorm t.test sd
 #'
-#' @examples
+#' @export
 process_maxquant <- function(df = NULL,
                              group1 = NULL, group2 = NULL,
                              meas = "LFQ.intensity", baseval = 0,

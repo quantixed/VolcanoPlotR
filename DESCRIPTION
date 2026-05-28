@@ -1,10 +1,19 @@
 Package: VolcanoPlotR
-Title: What the Package Does (One Line, Title Case)
+Title: Making Volcano Plots in R
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R:
+    person(given = "Stephen J",
+           family = "Royle",
+           role = c("cre", "aut"),
+           email = "admin@quantixed.org",
+           comment = c(ORCID = "0000-0001-8927-6967"))
+Maintainer: Stephen Royle <admin@quantixed.org>
+Description: Make pretty volcano plots in R using ggplot and Perseus style processing for proteomic data.
+    The current version only supports MaxQuant data and is a direct port of VolcanoPlots for IGOR.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
+RoxygenNote: 8.0.0
+Imports:
+  ggplot2,
+  utils

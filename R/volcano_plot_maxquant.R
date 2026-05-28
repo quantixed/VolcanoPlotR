@@ -1,6 +1,35 @@
+#' Volcano Plot of Maxquant Data
+#'
+#' This function generates a volcano plot from a subset of MaxQuant data. The
+#' data frame should contain the following columns: Protein.IDs, Gene.names,
+#' Protein.names, meas.ratio, p.value, and neg.log10.p.value. The function will
+#' add a colour code column to the data frame based on the p-value and fold
+#' change thresholds, and then use ggplot2 to create the volcano plot.
+#'
+#' @param df_subset a data frame containing the subset of the MaxQuant data that
+#'   will be used to generate the plot
+#' @param meas string indicating the measurement type (e.g. "LFQ.intensity",
+#'   "Intensity", etc.)
+#' @param threshold_p numeric indicating the p-value threshold
+#' @param threshold_fc numeric indicating the fold change threshold (in log2
+#'   space, i.e. 1 is a 2-fold change, 2 is a 4-fold change, etc.)
+#' @param vp_colours a named vector of colours for the volcano plot. The names
+#'   of the vector should be the integers 0 through 5, which correspond to the
+#'   different combinations of p-value and fold change thresholds. If NULL,
+#'   default colours will be used.
+#' @param fsize numeric indicating the font size
+#'
+#' @returns ggplot object containing the volcano plot
+#'
+#' @import ggplot2
+#'
+#' @export
 volcano_plot_maxquant <- function(df_subset = NULL, meas = "LFQ.intensity",
                                   threshold_p = 0.05, threshold_fc = 1,
                                   vp_colours = NULL, fsize = 8) {
+  # satisfy R CMD check
+  meas.ratio <- neg.log10.p.value <- vp_colorcode <- vp_label <- NULL
+
   # check that meas ends in . and if not, add it
   if (!grepl("\\.$", meas)) {
     meas <- paste0(meas, ".")
@@ -37,9 +66,6 @@ volcano_plot_maxquant <- function(df_subset = NULL, meas = "LFQ.intensity",
     geom_point(aes(colour = vp_colorcode),
                size = 1, shape = 16, alpha = 0.5) +
     scale_colour_manual(values = vp_colours) +
-    # scale_x_continuous(limits = c(-11, 11), breaks = seq(-10, 10, 2)) +
-    # scale_y_continuous(limits = c(0, 20), breaks = seq(0, 20, 2),
-    #                    labels = vp_label) +
     xlab(bquote(.(group1) ~ - ~ .(group2) ~ (Log[2]))) +
     ylab(bquote(P~value~(-Log[10]))) +
     theme_classic(fsize) +
