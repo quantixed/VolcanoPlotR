@@ -104,7 +104,8 @@ volcano_plot_maxquant <- function(df_subset = NULL,
                     "4" = "#606060", "5" = "#ff80ff")
   }
 
-  p <- ggplot()
+  p <- ggplot(df_subset, aes(x = meas.ratio, y = neg.log10.p.value,
+                             colour = vp_colorcode))
   if(zero_line) {
     p <- p + geom_vline(xintercept = 0, linetype = "dashed", colour = "grey")
   }
@@ -115,9 +116,7 @@ volcano_plot_maxquant <- function(df_subset = NULL,
     p <- p + geom_vline(xintercept = c(-threshold_fc, threshold_fc), linetype = "dashed", colour = "grey")
   }
   # adding the points to the plot
-  p <- p + geom_point(df_subset, aes(x = meas.ratio, y = neg.log10.p.value,
-                              colour = vp_colorcode),
-               size = 1, shape = 16, alpha = 0.5) +
+  p <- p + geom_point(size = 1, shape = 16, alpha = 0.5) +
     scale_colour_manual(values = vp_colours)
   # label the axes
   if(is.null(x_label)) {

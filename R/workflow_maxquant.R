@@ -16,6 +16,7 @@
 #'  \item `volcano_plot_maxquant()`: `meas`, `threshold_p`, `threshold_fc`,
 #'  `p_line`, `zero_line`, `x_line`, `vp_colours`, `groups`, `x_label`,
 #'  `y_label`, `fsize`
+#'  }
 #'
 #' @returns A ggplot object containing the volcano plot generated from the
 #'   MaxQuant data.

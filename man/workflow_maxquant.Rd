@@ -4,17 +4,31 @@
 \alias{workflow_maxquant}
 \title{Workflow for MaxQuant data analysis}
 \usage{
-workflow_maxquant()
+workflow_maxquant(...)
+}
+\arguments{
+\item{...}{ellipsis to allow the user to specify arguments for each function
+in the workflow. The accepted arguments for each function are as follows:
+\itemize{
+\item \code{load_maxquant()}: \code{file}, \code{datadir}, \code{clean}
+\item \code{process_maxquant()}: \code{group1}, \code{group2}, \code{meas}, \code{baseval}, \code{width},
+\code{downshift}, \code{seed}, \code{var.equal}, \code{paired}
+\item \code{volcano_plot_maxquant()}: \code{meas}, \code{threshold_p}, \code{threshold_fc},
+\code{p_line}, \code{zero_line}, \code{x_line}, \code{vp_colours}, \code{groups}, \code{x_label},
+\code{y_label}, \code{fsize}
+}}
 }
 \value{
-A ggplot object containing the volcano plot generated from the MaxQuant data.
+A ggplot object containing the volcano plot generated from the
+MaxQuant data.
 }
 \description{
 The purpose of this function is to provide a single function that will take a
 \code{proteinGroups.txt} produced by MaxQuant, perform the necessary data
 processing, and generate a volcano plot. This function will call the
 \code{load_maxquant()}, \code{process_maxquant()}, and \code{volcano_plot_maxquant()}
-functions in turn. The user will be asked to specify which groups are group 1 or group 2.
+functions in turn. The user will be asked to specify which groups are group 1
+or group 2.
 }
 \examples{
 \dontrun{
