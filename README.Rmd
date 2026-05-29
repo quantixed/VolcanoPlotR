@@ -29,7 +29,7 @@ Install the development version of VolcanoPlotR from [GitHub](https://github.com
 pak::pak("quantixed/VolcanoPlotR")
 ```
 
-## An Example
+## Example
 
 With a MaxQuant `proteinGroups.txt` placed in a `Data` directory, you can run the following code to generate a volcano plot:
 
@@ -43,7 +43,7 @@ Proteins enriched in Group1 will be towards the right of the plot and those enri
 
 An example file is included in the package, so you can run the following code to see how it works:
 
-```{r example2, fig.height = 8, fig.width = 8}
+```{r example2, fig.height = 4, fig.width = 4}
 library(VolcanoPlotR)
 # get the path to the proteinGroups.txt file included in the package
 filepath <- system.file("extdata", "proteinGroups.txt", package="VolcanoPlotR")

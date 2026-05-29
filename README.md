@@ -19,7 +19,7 @@ Install the development version of VolcanoPlotR from
 pak::pak("quantixed/VolcanoPlotR")
 ```
 
-## An Example
+## Example
 
 With a MaxQuant `proteinGroups.txt` placed in a `Data` directory, you
 can run the following code to generate a volcano plot:
