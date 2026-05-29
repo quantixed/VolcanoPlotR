@@ -61,7 +61,7 @@ volcano_plot_maxquant <- function(df_subset = NULL,
                                   y_label = NULL,
                                   fsize = 8) {
   # satisfy R CMD check
-  meas.ratio <- neg.log10.p.value <- vp_colorcode <- vp_label <- NULL
+  meas.ratio <- neg.log10.p.value <- vp_colorcode <- NULL
 
   # if user has not supplied a data frame, stop and print an error message
   if (is.null(df_subset)) {
@@ -97,7 +97,7 @@ volcano_plot_maxquant <- function(df_subset = NULL,
     ifelse(df_subset$meas.ratio >= threshold_fc, 4, 0)
   df_subset$vp_colorcode <- as.character(df_subset$vp_colorcode)
 
-  if(is.null(vp_label)) {
+  if(is.null(vp_colours)) {
     # integers 0 through 5 are possible
     vp_colours <- c("0" = "#a0a0a0", "1" = "#808080",
                     "2" = "#606060", "3" = "#8080ff",
