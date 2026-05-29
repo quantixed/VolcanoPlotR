@@ -2,4 +2,7 @@
 .DS_Store
 .Rhistory
 .Rdata
-.positai
+.httr-oauth
+.quarto
+inst/doc
+docs

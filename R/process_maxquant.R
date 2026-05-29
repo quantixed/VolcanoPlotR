@@ -68,6 +68,11 @@ process_maxquant <- function(df = NULL,
   if (!grepl("\\.$", meas)) {
     meas <- paste0(meas, ".")
   }
+  # check for df and if not present, stop and print an error message
+  if (is.null(df)) {
+    stop("No data frame supplied. Please provide a data frame containing the MaxQuant data to
+ be processed.")
+  }
 
   # find the experimental groups in the data frame using the names of the columns
   groups <- unique(gsub(meas, "", grep(meas, colnames(df), value = TRUE)))
