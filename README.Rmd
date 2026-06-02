@@ -43,7 +43,7 @@ Proteins enriched in Group1 will be towards the right of the plot and those enri
 
 An example file is included in the package, so you can run the following code to see how it works:
 
-```{r example2, fig.height = 4, fig.width = 4}
+```{r example2, fig.height = 4, fig.width = 4, out.width="50%"}
 library(VolcanoPlotR)
 # get the path to the proteinGroups.txt file included in the package
 filepath <- system.file("extdata", "proteinGroups.txt", package="VolcanoPlotR")

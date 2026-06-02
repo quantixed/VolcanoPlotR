@@ -51,7 +51,7 @@ workflow_maxquant(file = filename, datadir = filedir,
 #> Using specified groups: WT versus Control
 ```
 
-<img src="man/figures/README-example2-1.png" alt="" width="100%" />
+<img src="man/figures/README-example2-1.png" alt="" width="50%" />
 
 See the vignettes for more information.
 
