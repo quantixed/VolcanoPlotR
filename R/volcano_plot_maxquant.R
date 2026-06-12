@@ -36,9 +36,21 @@
 #'   as a text file (default is FALSE).
 #' @param text_output_dir character string specifying the directory where the
 #'   optional text file is saved(default is "Output/Data/").
+#' @param label_points string indicating which points to label on the plot.
+#'   Options are "none" (default) for no labels, "all" (attempt to label all
+#'   points), a character vector of selected proteins to label (e.g. c("P12345",
+#'   "Q67890", "IPO5") can be Gene.names, Protein.names, Protein.ID or a mix but
+#'   the values will be used to label), or a code for auto-labelling (e.g.
+#'   "3_all" or "5_10" which would label all significantly de-enriched points
+#'   (colour code 3) or the top 10 significantly enriched proteins (colour code
+#'   5), a code of "top_20" will label the top 20 proteins by manhattan distance
+#'   regardless of colour code).
+#'
 #' @returns ggplot object containing the volcano plot
 #'
 #' @import ggplot2
+#' @import ggrepel
+#' @importFrom utils head write.table
 #'
 #' @export
 #'
@@ -64,9 +76,10 @@ volcano_plot_maxquant <- function(df_subset = NULL,
                                   y_label = NULL,
                                   fsize = 8,
                                   text_output = FALSE,
-                                  text_output_dir = "Output/Data/") {
+                                  text_output_dir = "Output/Data",
+                                  label_points = "none") {
   # satisfy R CMD check
-  meas.ratio <- neg.log10.p.value <- vp_colorcode <- NULL
+  meas.ratio <- neg.log10.p.value <- vp_colorcode <- point_labels <- NULL
 
   # if user has not supplied a data frame, stop and print an error message
   if (is.null(df_subset)) {
@@ -115,12 +128,12 @@ volcano_plot_maxquant <- function(df_subset = NULL,
   # so_ratioWave, so_keyW - we'll skip the key wave (would just be the row
   # numbers before `order()`) note that meas.ratio and neg.log10.p.value are in
   # log spaces (vp space) and not the original p-value and fold change values
-  output_df <- df_subset[order(df_subset$manhattan.distance,
+  if(text_output) {
+    output_df <- df_subset[order(df_subset$manhattan.distance,
                                decreasing = TRUE),
                          c("Gene.names", "Protein.names", "Protein.IDs",
                            "manhattan.distance", "vp_colorcode", "meas.ratio",
                            "neg.log10.p.value")]
-  if(text_output) {
     text_filename <- paste0("rankTable_", group1, "_vs_", group2, ".txt")
     text_filepath <- file.path(text_output_dir, text_filename)
     write.table(output_df,
@@ -128,10 +141,13 @@ volcano_plot_maxquant <- function(df_subset = NULL,
                 row.names = FALSE, quote = FALSE)
   }
 
+  # add a column for the point labels based on the label_points argument
+  df_subset <- add_label_column(df_subset, label_points)
+
   ## Generate the volcano plot
 
   p <- ggplot(df_subset, aes(x = meas.ratio, y = neg.log10.p.value,
-                             colour = vp_colorcode))
+                             colour = vp_colorcode, label = point_labels))
   if(zero_line) {
     p <- p + geom_vline(xintercept = 0,
                         linetype = "dashed", colour = "grey")
@@ -147,6 +163,11 @@ volcano_plot_maxquant <- function(df_subset = NULL,
   # adding the points to the plot
   p <- p + geom_point(size = 1, shape = 16, alpha = 0.5) +
     scale_colour_manual(values = vp_colours)
+  # add labels if requested
+  if(any(nzchar(df_subset$point_labels))) {
+    p <- p + ggrepel::geom_text_repel(size = 1.5, max.overlaps = 25,
+                                      segment.alpha = 0.5, segment.size = 0.2)
+  }
   # label the axes
   if(is.null(x_label)) {
     p <- p + xlab(bquote(.(group1) ~ - ~ .(group2) ~ (Log[2])))

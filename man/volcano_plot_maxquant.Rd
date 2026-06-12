@@ -18,7 +18,8 @@ volcano_plot_maxquant(
   y_label = NULL,
   fsize = 8,
   text_output = FALSE,
-  text_output_dir = "Output/Data/"
+  text_output_dir = "Output/Data/",
+  label_points = "none"
 )
 }
 \arguments{
@@ -65,6 +66,16 @@ as a text file (default is FALSE).}
 
 \item{text_output_dir}{character string specifying the directory where the
 optional text file is saved(default is "Output/Data/").}
+
+\item{label_points}{string indicating which points to label on the plot.
+Options are "none" (default) for no labels, "all" (attempt to label all
+points), a character vector of selected proteins to label (e.g. c("P12345",
+"Q67890", "IPO5") can be Gene.names, Protein.names, Protein.ID or a mix but
+the values will be used to label), or a code for auto-labelling (e.g.
+"3_all" or "5_10" which would label all significantly de-enriched points
+(colour code 3) or the top 10 significantly enriched proteins (colour code
+5), a code of "top_20" will label the top 20 proteins by manhattan distance
+regardless of colour code).}
 }
 \value{
 ggplot object containing the volcano plot
