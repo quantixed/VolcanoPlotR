@@ -42,15 +42,24 @@
 #'   "Q67890", "IPO5") can be Gene.names, Protein.names, Protein.ID or a mix but
 #'   the values will be used to label), or a code for auto-labelling (e.g.
 #'   "3_all" or "5_10" which would label all significantly de-enriched points
-#'   (colour code 3) or the top 10 significantly enriched proteins (colour code
-#'   5), a code of "top_20" will label the top 20 proteins by manhattan distance
-#'   regardless of colour code).
+#' (colour code 3) or the top 10 significantly enriched proteins (colour code
+#' 5), a code of "top_20" will label the top 20 proteins by manhattan distance
+#' regardless of colour code).
+#' @param point_args a list of arguments to be passed to `geom_point()` for the
+#'   points in the volcano plot (default is `list(size = 1, shape = 16, alpha =
+#'   0.5)`). If the user specifies additional arguments or changes a default
+#'   argument, the defaults will be merged with the user-specified entries.
+#' @param label_args a list of arguments to be passed to
+#'   `ggrepel::geom_text_repel()` for the labels in the volcano plot (default is
+#'   `list(size = 1.5, max.overlaps = 25, segment.alpha = 0.5, segment.size =
+#'   0.2, colour = "black")`). If the user specifies additional arguments or
+#'   changes a default argument, the defaults will be merged with the
+#'   user-specified entries.
 #'
 #' @returns ggplot object containing the volcano plot
 #'
 #' @import ggplot2
 #' @import ggrepel
-#' @importFrom utils head write.table
 #'
 #' @export
 #'
@@ -77,7 +86,15 @@ volcano_plot_maxquant <- function(df_subset = NULL,
                                   fsize = 8,
                                   text_output = FALSE,
                                   text_output_dir = "Output/Data",
-                                  label_points = "none") {
+                                  label_points = "none",
+                                  point_args = list(size = 1,
+                                                    shape = 16,
+                                                    alpha = 0.5),
+                                  label_args = list(size = 1.5,
+                                                    max.overlaps = 25,
+                                                    segment.alpha = 0.5,
+                                                    segment.size = 0.2,
+                                                    colour = "black")) {
   # satisfy R CMD check
   meas.ratio <- neg.log10.p.value <- vp_colorcode <- point_labels <- NULL
 
@@ -130,19 +147,34 @@ volcano_plot_maxquant <- function(df_subset = NULL,
   # log spaces (vp space) and not the original p-value and fold change values
   if(text_output) {
     output_df <- df_subset[order(df_subset$manhattan.distance,
-                               decreasing = TRUE),
-                         c("Gene.names", "Protein.names", "Protein.IDs",
-                           "manhattan.distance", "vp_colorcode", "meas.ratio",
-                           "neg.log10.p.value")]
+                                 decreasing = TRUE),
+                           c("Gene.names", "Protein.names", "Protein.IDs",
+                             "manhattan.distance", "vp_colorcode", "meas.ratio",
+                             "neg.log10.p.value")]
     text_filename <- paste0("rankTable_", group1, "_vs_", group2, ".txt")
     text_filepath <- file.path(text_output_dir, text_filename)
-    write.table(output_df,
+    utils::write.table(output_df,
                 file = text_filepath, sep = "\t",
                 row.names = FALSE, quote = FALSE)
   }
 
   # add a column for the point labels based on the label_points argument
   df_subset <- add_label_column(df_subset, label_points)
+
+  # Merge user-supplied geom args with defaults so partial overrides keep
+  # unspecified defaults.
+  point_args <- utils::modifyList(
+    list(size = 1, shape = 16, alpha = 0.5),
+    point_args
+  )
+  label_args <- utils::modifyList(
+    list(size = 1.5,
+         max.overlaps = 25,
+         segment.alpha = 0.5,
+         segment.size = 0.2,
+         colour = "black"),
+    label_args
+  )
 
   ## Generate the volcano plot
 
@@ -161,12 +193,11 @@ volcano_plot_maxquant <- function(df_subset = NULL,
                         linetype = "dashed", colour = "grey")
   }
   # adding the points to the plot
-  p <- p + geom_point(size = 1, shape = 16, alpha = 0.5) +
+  p <- p + do.call(geom_point, point_args) +
     scale_colour_manual(values = vp_colours)
   # add labels if requested
   if(any(nzchar(df_subset$point_labels))) {
-    p <- p + ggrepel::geom_text_repel(size = 1.5, max.overlaps = 25,
-                                      segment.alpha = 0.5, segment.size = 0.2)
+    p <- p + do.call(ggrepel::geom_text_repel, label_args)
   }
   # label the axes
   if(is.null(x_label)) {

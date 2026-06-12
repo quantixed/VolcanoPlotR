@@ -18,8 +18,11 @@ volcano_plot_maxquant(
   y_label = NULL,
   fsize = 8,
   text_output = FALSE,
-  text_output_dir = "Output/Data/",
-  label_points = "none"
+  text_output_dir = "Output/Data",
+  label_points = "none",
+  point_args = list(size = 1, shape = 16, alpha = 0.5),
+  label_args = list(size = 1.5, max.overlaps = 25, segment.alpha = 0.5, segment.size =
+    0.2, colour = "black")
 )
 }
 \arguments{
@@ -76,6 +79,16 @@ the values will be used to label), or a code for auto-labelling (e.g.
 (colour code 3) or the top 10 significantly enriched proteins (colour code
 5), a code of "top_20" will label the top 20 proteins by manhattan distance
 regardless of colour code).}
+
+\item{point_args}{a list of arguments to be passed to \code{geom_point()} for the
+points in the volcano plot (default is \code{list(size = 1, shape = 16, alpha = 0.5)}). If the user specifies additional arguments or changes a default
+argument, the defaults will be merged with the user-specified entries.}
+
+\item{label_args}{a list of arguments to be passed to
+\code{ggrepel::geom_text_repel()} for the labels in the volcano plot (default is
+\code{list(size = 1.5, max.overlaps = 25, segment.alpha = 0.5, segment.size = 0.2, colour = "black")}). If the user specifies additional arguments or
+changes a default argument, the defaults will be merged with the
+user-specified entries.}
 }
 \value{
 ggplot object containing the volcano plot
