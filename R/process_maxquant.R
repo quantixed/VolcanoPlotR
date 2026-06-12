@@ -166,6 +166,8 @@ process_maxquant <- function(df = NULL,
   }
   # do a -log10 transformation of the p-values and add it as a new column
   df_subset$neg.log10.p.value <- -log10(df_subset$p.value)
+  # calculate the Manhattan distance for each row from the origin (0,0) in the volcano plot space and add it as a new column
+  df_subset$manhattan.distance <- abs(df_subset$meas.ratio) + abs(df_subset$neg.log10.p.value)
 
   return(df_subset)
 }

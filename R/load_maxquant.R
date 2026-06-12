@@ -61,21 +61,29 @@ load_maxquant <- function(file = "proteinGroups.txt", datadir = "Data", clean = 
     }), df$Gene.names)
   # if there are any rows in Gene.names that have a ";" in them, keep only the
   # first gene name (before the ";")
-  df$Gene.names <- sapply(df$Gene.names, function(x) strsplit(x,";")[[1]][1])
+  df$Gene.names <- sapply(df$Gene.names,
+                          function(x) strsplit(x,";")[[1]][1])
   # if there are any blanks in Protein.names, replace them with the text that is
   # after the 1st space and up to the occurrence of " OS=" in the "Fasta.headers"
   # column
-  df$Protein.names <- ifelse(df$Protein.names == "", sapply(df$Fasta.headers, function(x) {
-    start <- regexpr(" ", x)
-    stop <- regexpr(" OS=", x)
-    if (stop != -1) {
-      return(substr(x, start + 1, stop - 1))
-    } else {
-      return("")
-    }
-  }), df$Protein.names)
-  # if there are any rows in Protein.names that have a ";" in them, keep only the first gene name (before the ";")
-  df$Protein.names <- sapply(df$Protein.names, function(x) strsplit(x,";")[[1]][1])
+  df$Protein.names <- ifelse(df$Protein.names == "",
+                             sapply(df$Fasta.headers, function(x) {
+                               start <- regexpr(" ", x)
+                               stop <- regexpr(" OS=", x)
+                               if (stop != -1) {
+                                 return(substr(x, start + 1, stop - 1))
+                               } else {
+                                 return("")
+                               }
+                             }), df$Protein.names)
+  # if there are any rows in Protein.names that have a ";" in them, keep only
+  # the first gene name (before the ";")
+  df$Protein.names <- sapply(df$Protein.names,
+                             function(x) strsplit(x,";")[[1]][1])
+  # if there are any rows in Protein.IDs that have a ";" in them, keep only the
+  # first gene name (before the ";")
+  df$Protein.IDs <- sapply(df$Protein.IDs,
+                           function(x) strsplit(x,";")[[1]][1])
 
   # Return the loaded data
   return(df)

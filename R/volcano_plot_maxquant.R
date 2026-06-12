@@ -32,7 +32,10 @@
 #'   label will be generated.
 #' @param fsize numeric indicating the font size to use for the plot (default is
 #'   8)
-#'
+#' @param text_output boolean indicating whether to save the ranked protein list
+#'   as a text file (default is FALSE).
+#' @param text_output_dir character string specifying the directory where the
+#'   optional text file is saved(default is "Output/Data/").
 #' @returns ggplot object containing the volcano plot
 #'
 #' @import ggplot2
@@ -59,7 +62,9 @@ volcano_plot_maxquant <- function(df_subset = NULL,
                                   groups = NULL,
                                   x_label = NULL,
                                   y_label = NULL,
-                                  fsize = 8) {
+                                  fsize = 8,
+                                  text_output = FALSE,
+                                  text_output_dir = "Output/Data/") {
   # satisfy R CMD check
   meas.ratio <- neg.log10.p.value <- vp_colorcode <- NULL
 
@@ -104,16 +109,40 @@ volcano_plot_maxquant <- function(df_subset = NULL,
                     "4" = "#606060", "5" = "#ff80ff")
   }
 
+  # text output
+  # VolcanoPlot (IGOR package) saved the following columns: so_NAME,
+  # so_SHORTNAME, so_PID, so_productWave, so_colorWave, so_allTWave,
+  # so_ratioWave, so_keyW - we'll skip the key wave (would just be the row
+  # numbers before `order()`) note that meas.ratio and neg.log10.p.value are in
+  # log spaces (vp space) and not the original p-value and fold change values
+  output_df <- df_subset[order(df_subset$manhattan.distance,
+                               decreasing = TRUE),
+                         c("Gene.names", "Protein.names", "Protein.IDs",
+                           "manhattan.distance", "vp_colorcode", "meas.ratio",
+                           "neg.log10.p.value")]
+  if(text_output) {
+    text_filename <- paste0("rankTable_", group1, "_vs_", group2, ".txt")
+    text_filepath <- file.path(text_output_dir, text_filename)
+    write.table(output_df,
+                file = text_filepath, sep = "\t",
+                row.names = FALSE, quote = FALSE)
+  }
+
+  ## Generate the volcano plot
+
   p <- ggplot(df_subset, aes(x = meas.ratio, y = neg.log10.p.value,
                              colour = vp_colorcode))
   if(zero_line) {
-    p <- p + geom_vline(xintercept = 0, linetype = "dashed", colour = "grey")
+    p <- p + geom_vline(xintercept = 0,
+                        linetype = "dashed", colour = "grey")
   }
   if(p_line) {
-    p <- p + geom_hline(yintercept = -log10(threshold_p), linetype = "dashed", colour = "grey")
+    p <- p + geom_hline(yintercept = -log10(threshold_p),
+                        linetype = "dashed", colour = "grey")
   }
   if(x_line) {
-    p <- p + geom_vline(xintercept = c(-threshold_fc, threshold_fc), linetype = "dashed", colour = "grey")
+    p <- p + geom_vline(xintercept = c(-threshold_fc, threshold_fc),
+                        linetype = "dashed", colour = "grey")
   }
   # adding the points to the plot
   p <- p + geom_point(size = 1, shape = 16, alpha = 0.5) +

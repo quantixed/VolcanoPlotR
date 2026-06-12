@@ -16,7 +16,9 @@ volcano_plot_maxquant(
   groups = NULL,
   x_label = NULL,
   y_label = NULL,
-  fsize = 8
+  fsize = 8,
+  text_output = FALSE,
+  text_output_dir = "Output/Data/"
 )
 }
 \arguments{
@@ -57,6 +59,12 @@ label will be generated.}
 
 \item{fsize}{numeric indicating the font size to use for the plot (default is
 8)}
+
+\item{text_output}{boolean indicating whether to save the ranked protein list
+as a text file (default is FALSE).}
+
+\item{text_output_dir}{character string specifying the directory where the
+optional text file is saved(default is "Output/Data/").}
 }
 \value{
 ggplot object containing the volcano plot
