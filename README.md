@@ -39,7 +39,7 @@ code to see how it works:
 ``` r
 library(VolcanoPlotR)
 # get the path to the proteinGroups.txt file included in the package
-filepath <- system.file("extdata", "proteinGroups.txt", package="VolcanoPlotR")
+filepath <- system.file("extdata", "proteinGroups.txt", package = "VolcanoPlotR")
 # get the filename fromt the path
 filename <- basename(filepath)
 # get the directory name

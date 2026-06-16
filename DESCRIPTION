@@ -18,3 +18,7 @@ Imports:
   ggrepel,
   ggplot2,
   utils
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

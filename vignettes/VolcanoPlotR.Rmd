@@ -1,35 +1,24 @@
 ---
-output: github_document
+title: "VolcanoPlotR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{VolcanoPlotR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
-
-<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+  fig.width = 4,
+  fig.height = 4
 )
 ```
 
 # VolcanoPlotR
 
-<!-- badges: start -->
-<!-- badges: end -->
-
 VolcanoPlotR is a way to generate nice volcano plots from MaxQuant data.
-
-## Installation
-
-Install the development version of VolcanoPlotR from [GitHub](https://github.com/) with:
-
-```{r example, eval = FALSE}
-# install.packages("pak")
-pak::pak("quantixed/VolcanoPlotR")
-```
-
-## Example
 
 With a MaxQuant `proteinGroups.txt` placed in a `Data` directory, you can run the following code to generate a volcano plot:
 
@@ -43,11 +32,11 @@ Proteins enriched in Group1 will be towards the right of the plot and those enri
 
 An example file is included in the package, so you can run the following code to see how it works:
 
-```{r example2, fig.height = 4, fig.width = 4, out.width="50%"}
+```{r example2, out.width="50%"}
 library(VolcanoPlotR)
 # get the path to the proteinGroups.txt file included in the package
 filepath <- system.file("extdata", "proteinGroups.txt", package = "VolcanoPlotR")
-# get the filename fromt the path
+# get the filename from the path
 filename <- basename(filepath)
 # get the directory name
 filedir <- dirname(filepath)
@@ -57,9 +46,9 @@ workflow_maxquant(file = filename, datadir = filedir,
                   group1 = "WT", group2 = "Control")
 ```
 
-See the vignettes for more information.
+The output is a volcano plot which can be customised further. See the vignettes for more information.
 
-## Notes
-
-VolcanoPlotR is a port of [VolcanoPlot](https://github.com/quantixed/VolcanoPlot) to R.
+- Changing colours and plot appearance, including adding labels to proteins of interest (`vignette("appearance")`)
+- Text output of enriched proteins, alternative statistical tests and processing options (link)
+- Combining MaxQuant data from multiple experiments and generating a volcano plot from the combined data (coming soon)
 
