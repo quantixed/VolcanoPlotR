@@ -11,8 +11,7 @@ VolcanoPlotR is a way to generate nice volcano plots from MaxQuant data.
 
 ## Installation
 
-Install the development version of VolcanoPlotR from
-[GitHub](https://github.com/) with:
+Install the development version of VolcanoPlotR:
 
 ``` r
 # install.packages("pak")

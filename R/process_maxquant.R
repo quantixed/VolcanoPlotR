@@ -64,14 +64,24 @@ process_maxquant <- function(df = NULL,
                              seed = 123,
                              var.equal = TRUE,
                              paired = FALSE) {
+
+  # check for df and if not present, stop and print an error message
+  if (is.null(df)) {
+    stop("No data frame supplied.
+    Please provide a data frame containing the MaxQuant data to be processed.")
+  }
+
+  # check that a processed data frame has not been passed accidentally, if so,
+  # stop and print an error message
+  if (any(c("meas.ratio", "p.value", "neg.log10.p.value", "manhattan.distance") %in%
+          colnames(df))) {
+    stop("A processed data frame has been supplied.
+         Please provide a raw MaxQuant data frame to be processed.")
+  }
+
   # check that meas ends in . and if not, add it
   if (!grepl("\\.$", meas)) {
     meas <- paste0(meas, ".")
-  }
-  # check for df and if not present, stop and print an error message
-  if (is.null(df)) {
-    stop("No data frame supplied. Please provide a data frame containing the MaxQuant data to
- be processed.")
   }
 
   # find the experimental groups in the data frame using the names of the columns

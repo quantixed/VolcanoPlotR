@@ -124,8 +124,10 @@ add_label_column <- function(df_subset, label_points) {
       label_points <- output_df$Gene.names
     } else {
       last_row <- min(label_count, NROW(output_df))
-      top_points <- output_df[1:last_row, ]
-      label_points <- top_points$Gene.names
+      if(last_row > 0) {
+        top_points <- output_df[1:last_row, ]
+        label_points <- top_points$Gene.names
+      }
     }
   }
 
