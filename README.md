@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# VolcanoPlotR
+# VolcanoPlotR <a href="https://quantixed.github.io/VolcanoPlotR/"><img src="man/figures/logo.png" align="right" height="139" alt="" /></a>
 
 <!-- badges: start -->
 

@@ -49,6 +49,6 @@ workflow_maxquant(file = filename, datadir = filedir,
 The output is a volcano plot which can be customised further. See the vignettes for more information.
 
 - Changing colours and plot appearance, including adding labels to proteins of interest (`vignette("appearance")`)
-- Text output of enriched proteins, alternative statistical tests and processing options (link)
+- Text output of enriched proteins, alternative statistical tests and processing options (`vignette("outputs")`)
 - Combining MaxQuant data from multiple experiments and generating a volcano plot from the combined data (coming soon)
 

@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# VolcanoPlotR
+# VolcanoPlotR <a href="https://quantixed.github.io/VolcanoPlotR/"><img src="man/figures/logo.png" align="right" height="139" alt="" /></a>
 
 <!-- badges: start -->
 <!-- badges: end -->
