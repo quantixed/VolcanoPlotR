@@ -1,6 +1,6 @@
 # VolcanoPlotR
 
-## VolcanoPlotR
+## Getting started
 
 VolcanoPlotR is a way to generate nice volcano plots from MaxQuant data.
 
