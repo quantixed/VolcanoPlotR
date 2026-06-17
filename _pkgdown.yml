@@ -1,5 +1,6 @@
 url: https://quantixed.github.io/VolcanoPlotR/
+
 template:
   bootstrap: 5
-  theme: yeti
+  bootswatch: yeti
 
