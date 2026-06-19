@@ -2,6 +2,7 @@
 
 export(load_maxquant)
 export(mean_plot_maxquant)
+export(pca_plot_maxquant)
 export(process_maxquant)
 export(volcano_plot_maxquant)
 export(workflow_maxquant)
