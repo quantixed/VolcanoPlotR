@@ -61,6 +61,8 @@ VolcanoPlotR is a port of
 
 - [`load_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/load_maxquant.md)
   : Load MaxQuant output file
+- [`mean_plot_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/mean_plot_maxquant.md)
+  : Mean Plot of Maxquant Data
 - [`process_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/process_maxquant.md)
   : Process MaxQuant data for volcano plot
 - [`volcano_plot_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/volcano_plot_maxquant.md)

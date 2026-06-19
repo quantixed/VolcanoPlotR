@@ -74,7 +74,8 @@
 <p>The main output is obviously, the volcano plot itself, which is
 returned as a ggplot object from the
 <code><a href="../reference/volcano_plot_maxquant.html">volcano_plot_maxquant()</a></code> function. This can be customised
-further using ggplot2 functions.</p>
+further using ggplot2 functions, but there are other outputs that can be
+generated from the MaxQuant data.</p>
 <div class="section level2">
 <h2 id="text-output">Text output<a class="anchor" aria-label="anchor" href="#text-output"></a>
 </h2>
@@ -116,6 +117,46 @@ can set the <code>paired</code> parameter to <code>TRUE</code> in the
 <code>var.equal</code> parameter can be set to <code>FALSE</code> to use
 Welch’s t-test instead of Student’s t-test. The default settings mirror
 Perseus processing.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="other-plots">Other plots<a class="anchor" aria-label="anchor" href="#other-plots"></a>
+</h2>
+<div class="section level3">
+<h3 id="mean-vs-mean-plot">Mean vs Mean plot<a class="anchor" aria-label="anchor" href="#mean-vs-mean-plot"></a>
+</h3>
+<p>The function <code><a href="../reference/mean_plot_maxquant.html">mean_plot_maxquant()</a></code> can be used to
+generate a mean vs mean plot of the two groups being compared. This is
+useful for visualising the distribution of the data.</p>
+<p>The plot is generated with similar parameters to the volcano plot.
+Some examples are shown below:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://quantixed.github.io/VolcanoPlotR/">VolcanoPlotR</a></span><span class="op">)</span></span>
+<span><span class="co"># get the path to the proteinGroups.txt file included in the package</span></span>
+<span><span class="va">filepath</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"proteinGroups.txt"</span>, package <span class="op">=</span> <span class="st">"VolcanoPlotR"</span><span class="op">)</span></span>
+<span><span class="co"># get the filename from the path</span></span>
+<span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">filepath</span><span class="op">)</span></span>
+<span><span class="co"># get the directory name</span></span>
+<span><span class="va">filedir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/basename.html" class="external-link">dirname</a></span><span class="op">(</span><span class="va">filepath</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_maxquant.html">load_maxquant</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">filename</span>, datadir <span class="op">=</span> <span class="va">filedir</span><span class="op">)</span></span>
+<span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process_maxquant.html">process_maxquant</a></span><span class="op">(</span><span class="va">df</span>, group1 <span class="op">=</span> <span class="st">"WT"</span>, group2 <span class="op">=</span> <span class="st">"Control"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Using specified groups: WT versus Control</span></span>
+<span><span class="co"># now we can generate the mean vs mean plot</span></span>
+<span><span class="fu"><a href="../reference/mean_plot_maxquant.html">mean_plot_maxquant</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code></pre></div>
+<p><img src="outputs_files/figure-html/mean_plot-1.png" class="r-plt" alt="" width="576"></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># we can add a line to show the diagonal and start to label points</span></span>
+<span><span class="fu"><a href="../reference/mean_plot_maxquant.html">mean_plot_maxquant</a></span><span class="op">(</span><span class="va">df</span>, xy_line <span class="op">=</span> <span class="cn">TRUE</span>, label_points <span class="op">=</span> <span class="st">"top_20"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="outputs_files/figure-html/mean_plot-2.png" class="r-plt" alt="" width="576"></p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># the parameters are the same as for the volcano plot, so we can change the colours and labels</span></span>
+<span><span class="fu"><a href="../reference/mean_plot_maxquant.html">mean_plot_maxquant</a></span><span class="op">(</span><span class="va">df</span>, label_points <span class="op">=</span> <span class="st">"5_10"</span>,</span>
+<span>                   x_label <span class="op">=</span> <span class="st">"Control (LFQ Log2)"</span>,</span>
+<span>                   y_label <span class="op">=</span> <span class="st">"Important group (LFQ Log2)"</span>,</span>
+<span>                   vp_colours <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0"</span> <span class="op">=</span> <span class="st">"#a0a000"</span>, <span class="st">"1"</span> <span class="op">=</span> <span class="st">"#808080"</span>,</span>
+<span>                                  <span class="st">"2"</span> <span class="op">=</span> <span class="st">"#606060"</span>, <span class="st">"3"</span> <span class="op">=</span> <span class="st">"#00dd80"</span>,</span>
+<span>                                  <span class="st">"4"</span> <span class="op">=</span> <span class="st">"#606060"</span>, <span class="st">"5"</span> <span class="op">=</span> <span class="st">"#800080"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="outputs_files/figure-html/mean_plot-3.png" class="r-plt" alt="" width="576"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
