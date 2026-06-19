@@ -3,4 +3,8 @@ url: https://quantixed.github.io/VolcanoPlotR/
 template:
   bootstrap: 5
   bootswatch: yeti
-
+  bslib:
+    navbar:
+      bg: "#ceadf7"
+      fg: "#000000"
+    primary: "#332288"
