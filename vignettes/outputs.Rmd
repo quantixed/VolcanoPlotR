@@ -67,3 +67,11 @@ mean_plot_maxquant(df, label_points = "5_10",
                                   "4" = "#606060", "5" = "#800080"))
 ```
 
+## PCA plot
+
+This can be generated using the `pca_plot_maxquant()` function. The PCA plot shows a comparison between runs (experimental repeats), rather than between proteins.
+
+```{r pca_plot}
+# now we can generate the mean vs mean plot
+pca_plot_maxquant(df)
+```

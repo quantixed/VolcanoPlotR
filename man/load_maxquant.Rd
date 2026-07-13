@@ -4,7 +4,12 @@
 \alias{load_maxquant}
 \title{Load MaxQuant output file}
 \usage{
-load_maxquant(file = "proteinGroups.txt", datadir = "Data", clean = TRUE)
+load_maxquant(
+  file = "proteinGroups.txt",
+  datadir = "Data",
+  filepath = NULL,
+  clean = TRUE
+)
 }
 \arguments{
 \item{file}{character string specifying the name of the MaxQuant output file
@@ -12,6 +17,9 @@ to load (default is "proteinGroups.txt").}
 
 \item{datadir}{character string specifying the directory where the MaxQuant
 output file is located (default is "Data").}
+
+\item{filepath}{character string specifying the full path to the MaxQuant
+file. If provided, this will override the \code{file} and \code{datadir} parameters.}
 
 \item{clean}{boolean indicating whether to perform cleaning steps on the data
 (default is TRUE). If TRUE, rows with a "+" in the

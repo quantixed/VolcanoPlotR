@@ -117,6 +117,9 @@ volcano_plot_maxquant <- function(df_subset = NULL,
 
     group1 <- groups[1]
     group2 <- groups[2]
+    if(group1 == "test" && group2 == "control") {
+      warning("Found the default group names 'test' and 'control'. Please consider providing more descriptive group names using the 'groups' argument.")
+    }
   } else {
     # user defined groups for x axis label
     group1 <- groups[1]

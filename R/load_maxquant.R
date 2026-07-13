@@ -10,6 +10,8 @@
 #'   to load (default is "proteinGroups.txt").
 #' @param datadir character string specifying the directory where the MaxQuant
 #'   output file is located (default is "Data").
+#' @param filepath character string specifying the full path to the MaxQuant
+#'   file. If provided, this will override the `file` and `datadir` parameters.
 #' @param clean boolean indicating whether to perform cleaning steps on the data
 #'   (default is TRUE). If TRUE, rows with a "+" in the
 #'   "Only.identified.by.site", "Reverse", or "Potential.contaminant" columns
@@ -24,10 +26,12 @@
 #' \dontrun{
 #' load_maxquant()
 #' }
-load_maxquant <- function(file = "proteinGroups.txt", datadir = "Data", clean = TRUE) {
+load_maxquant <- function(file = "proteinGroups.txt", datadir = "Data", filepath = NULL, clean = TRUE) {
   # construct the full file path
-  filepath <- file.path(datadir, file)
-  # chack file exists
+  if (is.null(filepath)) {
+    filepath <- file.path(datadir, file)
+  }
+  # check file exists
   if (!file.exists(filepath)) {
     stop(paste("File not found:", filepath))
   }
