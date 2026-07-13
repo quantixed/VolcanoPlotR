@@ -79,11 +79,20 @@ R.</p>
 into its own subdirectory in the <code>Data</code> directory; the
 command will find and load any <code>proteinGroups.txt</code> in the
 <code>Data</code> directory.</p>
-<p>You will be given the option of specifying which group(s) corresponds
-to group1 (right side of the volcano plot) and which group(s)
-corresponds to group2 (left side of the volcano plot). The function will
-then combine the data from all the files and return a single data frame
-that can be used for plotting.</p>
+<p>The output of <code><a href="../reference/load_multiple_maxquant.html">load_multiple_maxquant()</a></code> is a list of data
+frames containing the combined data from all the files.</p>
+<div class="section level2">
+<h2 id="processing-the-data">Processing the data<a class="anchor" aria-label="anchor" href="#processing-the-data"></a>
+</h2>
+<div class="section level3">
+<h3 id="specifiying-groups">Specifiying groups<a class="anchor" aria-label="anchor" href="#specifiying-groups"></a>
+</h3>
+<p>Using <code><a href="../reference/process_multiple_maxquant.html">process_multiple_maxquant()</a></code> with the list of data
+frames, you will be given the option of specifying which group(s)
+corresponds to group1 (right side of the volcano plot) and which
+group(s) corresponds to group2 (left side of the volcano plot). The
+function will then combine the data from all the files and return a
+single data frame that can be used for plotting.</p>
 <p>In a simple example, two MaxQuant files have two groups each, “WT”
 and “Control”. The runs in the both files are called WT.1, WT.2, WT.3,
 Control.1, Control.2, Control.3. The function presents the user with a
@@ -111,13 +120,33 @@ specifying the groups in the function call, that is using
 for the first example and
 <code>load_multiple_maxquant(group1 = c("WT", "wildtype"), group2 = c("Control", "control"))</code>
 for the second example.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://quantixed.github.io/VolcanoPlotR/">VolcanoPlotR</a></span><span class="op">)</span></span>
+<span><span class="va">my_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/load_multiple_maxquant.html">load_multiple_maxquant</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">df_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process_multiple_maxquant.html">process_multiple_maxquant</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_list</span><span class="op">)</span></span>
+<span><span class="co"># or to bypass the selection step, specify the groups in the function call</span></span>
+<span><span class="va">df_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/process_multiple_maxquant.html">process_multiple_maxquant</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">my_list</span>, group1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"WT"</span>, <span class="st">"wildtype"</span><span class="op">)</span>, group2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Control"</span>, <span class="st">"control"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>There is an additional argument that can be used to use the average
+of the ratios rather than ratio the averages. This is useful if datasets
+have been combined but they have differing intensities. Using
+<code>ratio = TRUE</code> will compare test.1 with control.1, test.2
+with control.2, etc. and then average the ratios. Using
+<code>ratio = FALSE</code> will average the test samples and average the
+control samples and then compare the averages (this is the only option
+in the single file case). The default is <code>ratio = FALSE</code>.</p>
+</div>
+</div>
 <div class="section level2">
-<h2 id="processing-and-plotting">Processing and plotting<a class="anchor" aria-label="anchor" href="#processing-and-plotting"></a>
+<h2 id="plotting">Plotting<a class="anchor" aria-label="anchor" href="#plotting"></a>
 </h2>
 <p>The next steps are the same as if a single MaxQuant file had been
-used.</p>
+used. Use <code><a href="../reference/volcano_plot_maxquant.html">volcano_plot_maxquant()</a></code> or
+<code><a href="../reference/pca_plot_maxquant.html">pca_plot_maxquant()</a></code> or <code>mean_plot_maximum()</code> to
+generate the plots. <code><a href="../reference/process_multiple_maxquant.html">process_multiple_maxquant()</a></code> can be used
+as input to either of these functions.</p>
 </div>
-  </main>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

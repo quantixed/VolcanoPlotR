@@ -8,11 +8,22 @@ The best approach is to place each `proteinGroups.txt` into its own
 subdirectory in the `Data` directory; the command will find and load any
 `proteinGroups.txt` in the `Data` directory.
 
-You will be given the option of specifying which group(s) corresponds to
-group1 (right side of the volcano plot) and which group(s) corresponds
-to group2 (left side of the volcano plot). The function will then
-combine the data from all the files and return a single data frame that
-can be used for plotting.
+The output of
+[`load_multiple_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/load_multiple_maxquant.md)
+is a list of data frames containing the combined data from all the
+files.
+
+## Processing the data
+
+### Specifiying groups
+
+Using
+[`process_multiple_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/process_multiple_maxquant.md)
+with the list of data frames, you will be given the option of specifying
+which group(s) corresponds to group1 (right side of the volcano plot)
+and which group(s) corresponds to group2 (left side of the volcano
+plot). The function will then combine the data from all the files and
+return a single data frame that can be used for plotting.
 
 In a simple example, two MaxQuant files have two groups each, “WT” and
 “Control”. The runs in the both files are called WT.1, WT.2, WT.3,
@@ -45,6 +56,31 @@ first example and
 `load_multiple_maxquant(group1 = c("WT", "wildtype"), group2 = c("Control", "control"))`
 for the second example.
 
-## Processing and plotting
+``` r
+
+library(VolcanoPlotR)
+my_list <- load_multiple_maxquant()
+df_subset <- process_multiple_maxquant(data = my_list)
+# or to bypass the selection step, specify the groups in the function call
+df_subset <- process_multiple_maxquant(data = my_list, group1 = c("WT", "wildtype"), group2 = c("Control", "control"))
+```
+
+There is an additional argument that can be used to use the average of
+the ratios rather than ratio the averages. This is useful if datasets
+have been combined but they have differing intensities. Using
+`ratio = TRUE` will compare test.1 with control.1, test.2 with
+control.2, etc. and then average the ratios. Using `ratio = FALSE` will
+average the test samples and average the control samples and then
+compare the averages (this is the only option in the single file case).
+The default is `ratio = FALSE`.
+
+## Plotting
 
 The next steps are the same as if a single MaxQuant file had been used.
+Use
+[`volcano_plot_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/volcano_plot_maxquant.md)
+or
+[`pca_plot_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/pca_plot_maxquant.md)
+or `mean_plot_maximum()` to generate the plots.
+[`process_multiple_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/process_multiple_maxquant.md)
+can be used as input to either of these functions.
