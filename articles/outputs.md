@@ -97,3 +97,18 @@ mean_plot_maxquant(df, label_points = "5_10",
 ```
 
 ![](outputs_files/figure-html/mean_plot-3.png)
+
+### PCA plot
+
+This can be generated using the
+[`pca_plot_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/pca_plot_maxquant.md)
+function. The PCA plot shows a comparison between runs (experimental
+repeats), rather than between proteins.
+
+``` r
+
+# now we can generate the mean vs mean plot
+pca_plot_maxquant(df)
+```
+
+![](outputs_files/figure-html/pca_plot-1.png)

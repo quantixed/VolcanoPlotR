@@ -10,7 +10,12 @@ proteins, the first one in the list is kept.
 ## Usage
 
 ``` r
-load_maxquant(file = "proteinGroups.txt", datadir = "Data", clean = TRUE)
+load_maxquant(
+  file = "proteinGroups.txt",
+  datadir = "Data",
+  filepath = NULL,
+  clean = TRUE
+)
 ```
 
 ## Arguments
@@ -24,6 +29,11 @@ load_maxquant(file = "proteinGroups.txt", datadir = "Data", clean = TRUE)
 
   character string specifying the directory where the MaxQuant output
   file is located (default is "Data").
+
+- filepath:
+
+  character string specifying the full path to the MaxQuant file. If
+  provided, this will override the `file` and `datadir` parameters.
 
 - clean:
 
