@@ -159,11 +159,17 @@ process_maxquant <- function(df = NULL,
 
   ## ratio calculation (log2FC)
 
+  # This is the way the calculation is done in Perseus:
   # calculate the mean for each row of the LFQ.intensity.group1 as a new column and the mean of LFQ.intensity.group2 as a new column
   df_subset$meas.group1.mean <- rowMeans(df_subset[, grep(paste0(meas, group1), colnames(df_subset))], na.rm = TRUE)
   df_subset$meas.group2.mean <- rowMeans(df_subset[, grep(paste0(meas, group2), colnames(df_subset))], na.rm = TRUE)
   # the ratio is group1 - group2 because we are in log2 space
   df_subset$meas.ratio <- df_subset$meas.group1.mean - df_subset$meas.group2.mean
+  # Note: this is equivalent to subtraction of columns and then averaging
+  # Note: this result is different from transforming back to linear space,
+  # averaging the groups, taking the ratio and then transforming back to log2
+  # space Calculating the arithmetic mean in log space is the same as calculating
+  # the geometric mean in linear space, but this is how Perseus does it.
 
   ## p-value calculation
 
@@ -176,6 +182,7 @@ process_maxquant <- function(df = NULL,
   }
   # do a -log10 transformation of the p-values and add it as a new column
   df_subset$neg.log10.p.value <- -log10(df_subset$p.value)
+
   # calculate the Manhattan distance for each row from the origin (0,0) in the volcano plot space and add it as a new column
   df_subset$manhattan.distance <- abs(df_subset$meas.ratio) + abs(df_subset$neg.log10.p.value)
 

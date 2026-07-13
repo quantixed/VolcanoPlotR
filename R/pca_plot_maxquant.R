@@ -12,6 +12,17 @@
 #' @param groups optional character vector used to relabel the experimental
 #'   groups in the legend. If `NULL`, group names are deduced from the
 #'   measurement column names.
+#' @param by_protein boolean indicating whether to perform PCA on the protein
+#'   rows (default is FALSE). If TRUE, PCA will be performed on the protein rows
+#'   rather than the sample columns.
+#' @param threshold_p numeric indicating the p-value threshold. Used if
+#'   by_protein is TRUE to colour the points in the PCA plot based on
+#'   significance.
+#' @param threshold_fc numeric indicating the fold change threshold (in log2
+#'   space, i.e. 1 is a 2-fold change, 2 is a 4-fold change, etc.). Used if
+#'   by_protein is TRUE to colour the points in the PCA plot based on
+#'   significance.
+#' @param vp_colours a named vector of colours for the PCA plot.
 #' @param x_label string specifying the label for the x-axis. If `NULL`, a
 #'   default label showing the variance explained by PC1 will be generated.
 #' @param y_label string specifying the label for the y-axis. If `NULL`, a
@@ -20,7 +31,9 @@
 #' @param fsize numeric indicating the font size to use for the plot (default is
 #'   8)
 #' @param label_points boolean indicating whether to label sample points
-#'   (default is TRUE)
+#'   (default is NULL and triggers a setting of FALSE if `by_protein` is TRUE,
+#'   and TRUE if `by_protein` is is FALSE). If TRUE, sample points will be
+#'   labelled with their sample names. If FALSE, no labels will be added.
 #' @param point_args a list of arguments to be passed to `geom_point()` for the
 #'   points in the PCA plot (default is `list(size = 3, alpha = 0.8)`). If the
 #'   user specifies additional arguments or changes a default argument, the
@@ -51,11 +64,15 @@
 pca_plot_maxquant <- function(df_subset = NULL,
                               meas = "LFQ.intensity",
                               groups = NULL,
+                              by_protein = FALSE,
+                              threshold_p = 0.05,
+                              threshold_fc = 1,
+                              vp_colours = NULL,
                               x_label = NULL,
                               y_label = NULL,
                               xy_line = TRUE,
                               fsize = 8,
-                              label_points = TRUE,
+                              label_points = NULL,
                               point_args = list(size = 3,
                                                 alpha = 0.8),
                               label_args = list(size = 3,
@@ -94,6 +111,9 @@ pca_plot_maxquant <- function(df_subset = NULL,
     stop("At least two proteins are required to generate the PCA plot.")
   }
 
+  if(by_protein) {
+    sample_matrix <- t(sample_matrix)
+  }
   pca_fit <- stats::prcomp(t(sample_matrix), center = TRUE, scale. = TRUE)
 
   if (ncol(pca_fit$x) < 2) {
@@ -113,6 +133,30 @@ pca_plot_maxquant <- function(df_subset = NULL,
     sample_groups <- unname(rename_map[sample_groups])
   }
 
+  # add a colour code column for the volcano plot we'll do it using bit setting:
+  # bit 0 is p-value < threshold_p, bit 1 is meas.ratio <= -1, bit 2 is
+  # meas.ratio >= 1 then change to character for the purposes of applying
+  # colours to points
+  df_subset$vp_colorcode <- ifelse(df_subset$p.value < threshold_p, 1, 0) +
+    ifelse(df_subset$meas.ratio <= -threshold_fc, 2, 0) +
+    ifelse(df_subset$meas.ratio >= threshold_fc, 4, 0)
+  df_subset$vp_colorcode <- as.character(df_subset$vp_colorcode)
+
+  if(is.null(vp_colours)) {
+    # integers 0 through 5 are possible
+    vp_colours <- c("0" = "#a0a0a0", "1" = "#808080",
+                    "2" = "#606060", "3" = "#8080ff",
+                    "4" = "#606060", "5" = "#ff80ff")
+  }
+
+
+  if(by_protein) {
+    sample_names <- df_subset$Protein.IDs
+    sample_groups <- df_subset$vp_colorcode
+  }
+
+
+  # create data frame for ggplot
   plot_df <- data.frame(
     sample = sample_names,
     group = sample_groups,
@@ -120,6 +164,11 @@ pca_plot_maxquant <- function(df_subset = NULL,
     PC2 = pca_fit$x[, 2],
     stringsAsFactors = FALSE
   )
+
+  # process graphing arguments
+  if(is.null(label_points)) {
+    label_points <- !by_protein
+  }
 
   point_args <- utils::modifyList(
     list(size = 3, alpha = 0.8),
@@ -142,6 +191,11 @@ pca_plot_maxquant <- function(df_subset = NULL,
       geom_vline(xintercept = 0, linetype = "dashed", colour = "grey")
   }
   p <- p + do.call(geom_point, point_args)
+  if (by_protein) {
+    p <- p + scale_colour_manual(values = vp_colours)
+  } else {
+    p <- p + scale_colour_discrete()
+  }
 
   if (isTRUE(label_points)) {
     p <- p + do.call(ggrepel::geom_text_repel, label_args)

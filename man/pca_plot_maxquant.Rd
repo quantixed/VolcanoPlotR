@@ -8,11 +8,15 @@ pca_plot_maxquant(
   df_subset = NULL,
   meas = "LFQ.intensity",
   groups = NULL,
+  by_protein = FALSE,
+  threshold_p = 0.05,
+  threshold_fc = 1,
+  vp_colours = NULL,
   x_label = NULL,
   y_label = NULL,
   xy_line = TRUE,
   fsize = 8,
-  label_points = TRUE,
+  label_points = NULL,
   point_args = list(size = 3, alpha = 0.8),
   label_args = list(size = 3, max.overlaps = Inf, segment.alpha = 0.5, segment.size =
     0.2, colour = "black")
@@ -29,6 +33,21 @@ will be used to generate the plot}
 groups in the legend. If \code{NULL}, group names are deduced from the
 measurement column names.}
 
+\item{by_protein}{boolean indicating whether to perform PCA on the protein
+rows (default is FALSE). If TRUE, PCA will be performed on the protein rows
+rather than the sample columns.}
+
+\item{threshold_p}{numeric indicating the p-value threshold. Used if
+by_protein is TRUE to colour the points in the PCA plot based on
+significance.}
+
+\item{threshold_fc}{numeric indicating the fold change threshold (in log2
+space, i.e. 1 is a 2-fold change, 2 is a 4-fold change, etc.). Used if
+by_protein is TRUE to colour the points in the PCA plot based on
+significance.}
+
+\item{vp_colours}{a named vector of colours for the PCA plot.}
+
 \item{x_label}{string specifying the label for the x-axis. If \code{NULL}, a
 default label showing the variance explained by PC1 will be generated.}
 
@@ -41,7 +60,9 @@ default label showing the variance explained by PC2 will be generated.}
 8)}
 
 \item{label_points}{boolean indicating whether to label sample points
-(default is TRUE)}
+(default is NULL and triggers a setting of FALSE if \code{by_protein} is TRUE,
+and TRUE if \code{by_protein} is is FALSE). If TRUE, sample points will be
+labelled with their sample names. If FALSE, no labels will be added.}
 
 \item{point_args}{a list of arguments to be passed to \code{geom_point()} for the
 points in the PCA plot (default is \code{list(size = 3, alpha = 0.8)}). If the

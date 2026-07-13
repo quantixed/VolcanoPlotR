@@ -44,8 +44,12 @@
 #'   columns by name.
 #' @param ratio boolean indicating whether the enrichment in group 1 vs group 2
 #'   is calculated for each protein for each run and then averaged (default is
-#'   TRUE). If FALSE, the mean of the measure of a group 1 protein is compared
-#'   with the mean of the measure for group 2.
+#'   FALSE). If FALSE, the mean of the measure of a group 1 protein is compared
+#'   with the mean of the measure for group 2. The ratio method is useful when
+#'   files have been processed in different batches and the means of the groups
+#'   are not comparable. The ratio method is more robust to batch effects, but
+#'   it requires that the number of replicates in group 1 and group 2 are the
+#'   same.
 #'
 #' @returns A data frame containing the processed MaxQuant data suitable for
 #'   volcano plot visualization, including columns for log2 fold change and
@@ -68,7 +72,7 @@ process_multiple_maxquant <- function(data = NULL,
                                       seed = 123,
                                       var.equal = TRUE,
                                       paired = FALSE,
-                                      ratio = TRUE) {
+                                      ratio = FALSE) {
 
   # check for list and if not present, stop and print an error message
   if (is.null(data)) {
@@ -227,8 +231,15 @@ process_multiple_maxquant <- function(data = NULL,
   group2_data <- df_subset[, grep(paste0(meas, group2), colnames(df_subset))]
   # check that the number of columns in group1_data and group2_data are the same
   if(ncol(group1_data) != ncol(group2_data)) {
+    unequal <- TRUE
+  }
+  if(ratio & unequal) {
     warning("The number of columns in group1_data and group2_data are not the same. The ratio will be calculated as the mean of group1_data minus the mean of group2_data.")
     ratio <- FALSE
+  }
+  if(paired & unequal) {
+    warning("The number of columns in group1_data and group2_data are not the same. Paired t-test will not be used.")
+    paired <- FALSE
   }
   # calculate the mean for each row of the LFQ.intensity.group1 as a new column and the mean of LFQ.intensity.group2 as a new column
   df_subset$meas.group1.mean <- rowMeans(group1_data, na.rm = TRUE)
