@@ -26,7 +26,7 @@ process_multiple_maxquant(
   seed = 123,
   var.equal = TRUE,
   paired = FALSE,
-  ratio = TRUE
+  ratio = FALSE
 )
 ```
 
@@ -97,8 +97,12 @@ process_multiple_maxquant(
 
   boolean indicating whether the enrichment in group 1 vs group 2 is
   calculated for each protein for each run and then averaged (default is
-  TRUE). If FALSE, the mean of the measure of a group 1 protein is
-  compared with the mean of the measure for group 2.
+  FALSE). If FALSE, the mean of the measure of a group 1 protein is
+  compared with the mean of the measure for group 2. The ratio method is
+  useful when files have been processed in different batches and the
+  means of the groups are not comparable. The ratio method is more
+  robust to batch effects, but it requires that the number of replicates
+  in group 1 and group 2 are the same.
 
 ## Value
 

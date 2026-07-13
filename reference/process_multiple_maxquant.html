@@ -83,7 +83,7 @@ value indicates enrichment in group2.</p>
 <span>  seed <span class="op">=</span> <span class="fl">123</span>,</span>
 <span>  var.equal <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  paired <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  ratio <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  ratio <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -155,8 +155,12 @@ columns by name.</p></dd>
 <dt id="arg-ratio">ratio<a class="anchor" aria-label="anchor" href="#arg-ratio"></a></dt>
 <dd><p>boolean indicating whether the enrichment in group 1 vs group 2
 is calculated for each protein for each run and then averaged (default is
-TRUE). If FALSE, the mean of the measure of a group 1 protein is compared
-with the mean of the measure for group 2.</p></dd>
+FALSE). If FALSE, the mean of the measure of a group 1 protein is compared
+with the mean of the measure for group 2. The ratio method is useful when
+files have been processed in different batches and the means of the groups
+are not comparable. The ratio method is more robust to batch effects, but
+it requires that the number of replicates in group 1 and group 2 are the
+same.</p></dd>
 
 </dl></div>
     <div class="section level2">

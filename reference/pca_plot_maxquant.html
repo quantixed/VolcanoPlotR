@@ -58,11 +58,15 @@ same processed subset that would be passed to <code><a href="volcano_plot_maxqua
 <span>  df_subset <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  meas <span class="op">=</span> <span class="st">"LFQ.intensity"</span>,</span>
 <span>  groups <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  by_protein <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  threshold_p <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  threshold_fc <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  vp_colours <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  x_label <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  y_label <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  xy_line <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  fsize <span class="op">=</span> <span class="fl">8</span>,</span>
-<span>  label_points <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  label_points <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  point_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span>,</span>
 <span>  label_args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">3</span>, max.overlaps <span class="op">=</span> <span class="cn">Inf</span>, segment.alpha <span class="op">=</span> <span class="fl">0.5</span>, segment.size <span class="op">=</span></span>
 <span>    <span class="fl">0.2</span>, colour <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span></span>
@@ -89,6 +93,29 @@ groups in the legend. If <code>NULL</code>, group names are deduced from the
 measurement column names.</p></dd>
 
 
+<dt id="arg-by-protein">by_protein<a class="anchor" aria-label="anchor" href="#arg-by-protein"></a></dt>
+<dd><p>boolean indicating whether to perform PCA on the protein
+rows (default is FALSE). If TRUE, PCA will be performed on the protein rows
+rather than the sample columns.</p></dd>
+
+
+<dt id="arg-threshold-p">threshold_p<a class="anchor" aria-label="anchor" href="#arg-threshold-p"></a></dt>
+<dd><p>numeric indicating the p-value threshold. Used if
+by_protein is TRUE to colour the points in the PCA plot based on
+significance.</p></dd>
+
+
+<dt id="arg-threshold-fc">threshold_fc<a class="anchor" aria-label="anchor" href="#arg-threshold-fc"></a></dt>
+<dd><p>numeric indicating the fold change threshold (in log2
+space, i.e. 1 is a 2-fold change, 2 is a 4-fold change, etc.). Used if
+by_protein is TRUE to colour the points in the PCA plot based on
+significance.</p></dd>
+
+
+<dt id="arg-vp-colours">vp_colours<a class="anchor" aria-label="anchor" href="#arg-vp-colours"></a></dt>
+<dd><p>a named vector of colours for the PCA plot.</p></dd>
+
+
 <dt id="arg-x-label">x_label<a class="anchor" aria-label="anchor" href="#arg-x-label"></a></dt>
 <dd><p>string specifying the label for the x-axis. If <code>NULL</code>, a
 default label showing the variance explained by PC1 will be generated.</p></dd>
@@ -110,7 +137,9 @@ default label showing the variance explained by PC2 will be generated.</p></dd>
 
 <dt id="arg-label-points">label_points<a class="anchor" aria-label="anchor" href="#arg-label-points"></a></dt>
 <dd><p>boolean indicating whether to label sample points
-(default is TRUE)</p></dd>
+(default is NULL and triggers a setting of FALSE if <code>by_protein</code> is TRUE,
+and TRUE if <code>by_protein</code> is is FALSE). If TRUE, sample points will be
+labelled with their sample names. If FALSE, no labels will be added.</p></dd>
 
 
 <dt id="arg-point-args">point_args<a class="anchor" aria-label="anchor" href="#arg-point-args"></a></dt>

@@ -13,11 +13,15 @@ pca_plot_maxquant(
   df_subset = NULL,
   meas = "LFQ.intensity",
   groups = NULL,
+  by_protein = FALSE,
+  threshold_p = 0.05,
+  threshold_fc = 1,
+  vp_colours = NULL,
   x_label = NULL,
   y_label = NULL,
   xy_line = TRUE,
   fsize = 8,
-  label_points = TRUE,
+  label_points = NULL,
   point_args = list(size = 3, alpha = 0.8),
   label_args = list(size = 3, max.overlaps = Inf, segment.alpha = 0.5, segment.size =
     0.2, colour = "black")
@@ -42,6 +46,27 @@ pca_plot_maxquant(
   the legend. If `NULL`, group names are deduced from the measurement
   column names.
 
+- by_protein:
+
+  boolean indicating whether to perform PCA on the protein rows (default
+  is FALSE). If TRUE, PCA will be performed on the protein rows rather
+  than the sample columns.
+
+- threshold_p:
+
+  numeric indicating the p-value threshold. Used if by_protein is TRUE
+  to colour the points in the PCA plot based on significance.
+
+- threshold_fc:
+
+  numeric indicating the fold change threshold (in log2 space, i.e. 1 is
+  a 2-fold change, 2 is a 4-fold change, etc.). Used if by_protein is
+  TRUE to colour the points in the PCA plot based on significance.
+
+- vp_colours:
+
+  a named vector of colours for the PCA plot.
+
 - x_label:
 
   string specifying the label for the x-axis. If `NULL`, a default label
@@ -62,7 +87,10 @@ pca_plot_maxquant(
 
 - label_points:
 
-  boolean indicating whether to label sample points (default is TRUE)
+  boolean indicating whether to label sample points (default is NULL and
+  triggers a setting of FALSE if `by_protein` is TRUE, and TRUE if
+  `by_protein` is is FALSE). If TRUE, sample points will be labelled
+  with their sample names. If FALSE, no labels will be added.
 
 - point_args:
 
