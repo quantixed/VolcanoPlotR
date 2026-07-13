@@ -229,6 +229,7 @@ process_multiple_maxquant <- function(data = NULL,
   ## ratio calculation (log2FC)
   group1_data <- df_subset[, grep(paste0(meas, group1), colnames(df_subset))]
   group2_data <- df_subset[, grep(paste0(meas, group2), colnames(df_subset))]
+  unequal <- FALSE
   # check that the number of columns in group1_data and group2_data are the same
   if(ncol(group1_data) != ncol(group2_data)) {
     unequal <- TRUE
