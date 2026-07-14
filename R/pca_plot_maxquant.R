@@ -151,7 +151,7 @@ pca_plot_maxquant <- function(df_subset = NULL,
 
 
   if(by_protein) {
-    sample_names <- df_subset$Protein.IDs
+    sample_names <- df_subset$Gene.names
     sample_groups <- df_subset$vp_colorcode
   }
 
