@@ -102,13 +102,27 @@ mean_plot_maxquant(df, label_points = "5_10",
 
 This can be generated using the
 [`pca_plot_maxquant()`](https://quantixed.github.io/VolcanoPlotR/reference/pca_plot_maxquant.md)
-function. The PCA plot shows a comparison between runs (experimental
-repeats), rather than between proteins.
+function. The PCA plot by default shows a comparison between runs
+(experimental repeats), rather than between proteins.
 
 ``` r
 
-# now we can generate the mean vs mean plot
+# pca of the experimental repeats
 pca_plot_maxquant(df)
 ```
 
 ![](outputs_files/figure-html/pca_plot-1.png)
+
+Using the `by_protein` parameter, the PCA can be generated for the
+proteins instead of the experimental repeats. In this case, the points
+are coloured by significance based on the p-value and fold change
+thresholds. The settings for this plot can be adjusted in similar ways
+as for the volcano plot and the mean vs mean plot.
+
+``` r
+
+# pca of the proteins, coloured by significance
+pca_plot_maxquant(df, by_protein = TRUE)
+```
+
+![](outputs_files/figure-html/pca_plot2-1.png)
