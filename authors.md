@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/quantixed/VolcanoPlotR/blob/v0.0.1/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/quantixed/VolcanoPlotR/blob/master/DESCRIPTION)
 
 Royle S (2026). *VolcanoPlotR: Making Volcano Plots in R*. R package
 version 0.0.1, <https://quantixed.github.io/VolcanoPlotR/>.
