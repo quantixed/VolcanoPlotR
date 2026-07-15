@@ -6,6 +6,7 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/quantixed/VolcanoPlotR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/quantixed/VolcanoPlotR/actions/workflows/R-CMD-check.yaml)
+[![DOI](https://zenodo.org/badge/1250027780.svg)](https://doi.org/10.5281/zenodo.21372632)
 <!-- badges: end -->
 
 VolcanoPlotR is a way to generate nice volcano plots from MaxQuant data.
